@@ -51,6 +51,15 @@ var start = function start(grunt) {
             }
 		});
 	});
+
+    grunt.util.hooker.hook(grunt.fail, function () {
+        grunt.log.writeln('Attempting to clean up running selenium server.');
+        try {
+            seleniumChildProcess.kill('SIGINT');
+        } catch (e) {
+            grunt.log.warn('Unable to stop selenium target: ' + seleniumChildProcess);
+        }
+    });
 };
 
 var stop = function stop(grunt) {
